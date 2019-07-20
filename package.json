@@ -14,7 +14,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:css": "stylelint --config=.stylelintrc.json '**/*.css'",
-    "format:css": "npm run lint:css -- --fix"
+    "format:css": "npm run lint:css -- --fix",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,7 +34,13 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
+    "@storybook/react": "^5.1.9",
     "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
     "eslint": "^6.0.1",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.0",
