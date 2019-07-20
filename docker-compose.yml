@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  node_dev:
+    build: .
+    container_name: node_docker
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/home/app
