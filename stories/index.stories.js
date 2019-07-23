@@ -7,6 +7,9 @@ import { linkTo } from '@storybook/addon-links';
 import { Button, Welcome } from '@storybook/react/demo';
 
 import StartStopButton from '../src/Timer/StartStopButton';
+import DisplayText from '../src/Timer/DisplayText';
+import '../src/index.css';
+import '../src/App.css';
 
 storiesOf('Welcome', module).add('to Storybook', () => (
   <Welcome showApp={linkTo('Button')} />
@@ -24,3 +27,7 @@ storiesOf('Button', module)
     </Button>
   ))
   .add('Start / Stop Button', () => <StartStopButton />);
+
+storiesOf('Text', module).add('Timer Display', () => (
+  <DisplayText>23:10</DisplayText>
+));
