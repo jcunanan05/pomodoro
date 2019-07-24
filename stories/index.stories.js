@@ -12,6 +12,7 @@ import Title from '../src/Timer/Title';
 import './fonts.css';
 import '../src/index.css';
 import '../src/App.css';
+import StatusMessage from '../src/Timer/StatusMessage';
 
 storiesOf('Welcome', module).add('to Storybook', () => (
   <Welcome showApp={linkTo('Button')} />
@@ -34,4 +35,19 @@ storiesOf('Text', module)
   .add('Timer Display', () => (
     <TimerText timer="23:10" currentCycle={8} totalCycle={10}></TimerText>
   ))
-  .add('Title Text', () => <Title>Pomodoro Timer</Title>);
+  .add('Title Text with status message', () => (
+    <>
+      <Title>Pomodoro Timer</Title>
+      <StatusMessage
+        message="Start working!"
+        breakMessage="You are on a break."
+      />
+      <hr />
+      <Title>Pomodoro Timer</Title>
+      <StatusMessage
+        isBreak
+        message="Start working!"
+        breakMessage="✔️ You are on a break."
+      />
+    </>
+  ));
