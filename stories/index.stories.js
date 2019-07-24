@@ -31,5 +31,7 @@ storiesOf('Button', module)
   .add('Start / Stop Button', () => <StartStopButton />);
 
 storiesOf('Text', module)
-  .add('Timer Display', () => <TimerText>23:10</TimerText>)
+  .add('Timer Display', () => (
+    <TimerText timer="23:10" currentCycle={8} totalCycle={10}></TimerText>
+  ))
   .add('Title Text', () => <Title>Pomodoro Timer</Title>);

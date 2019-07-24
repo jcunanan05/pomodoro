@@ -1,5 +1,14 @@
 .timer-text {
   font-family: Poppins, sans-serif;
+}
+
+h2.timer-text {
   font-weight: bold;
   font-size: 48px;
+  margin: 0;
+}
+
+.cycle-text {
+  margin: 0;
+  color: hsl(0, 0%, 50%);
 }
