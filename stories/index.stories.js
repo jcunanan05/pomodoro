@@ -7,7 +7,8 @@ import { linkTo } from '@storybook/addon-links';
 import { Button, Welcome } from '@storybook/react/demo';
 
 import StartStopButton from '../src/Timer/StartStopButton';
-import DisplayText from '../src/Timer/DisplayText';
+import TimerText from '../src/Timer/TimerText';
+import Title from '../src/Timer/Title';
 import './fonts.css';
 import '../src/index.css';
 import '../src/App.css';
@@ -29,6 +30,6 @@ storiesOf('Button', module)
   ))
   .add('Start / Stop Button', () => <StartStopButton />);
 
-storiesOf('Text', module).add('Timer Display', () => (
-  <DisplayText>23:10</DisplayText>
-));
+storiesOf('Text', module)
+  .add('Timer Display', () => <TimerText>23:10</TimerText>)
+  .add('Title Text', () => <Title>Pomodoro Timer</Title>);
