@@ -8,6 +8,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 
 import StartStopButton from '../src/Timer/StartStopButton';
 import DisplayText from '../src/Timer/DisplayText';
+import './fonts.css';
 import '../src/index.css';
 import '../src/App.css';
 
