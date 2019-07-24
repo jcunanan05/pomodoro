@@ -7,3 +7,17 @@
 .text-color-secondary {
   color: #e69733;
 }
+
+.text-color-grey {
+  color: hsl(0, 0%, 50%);
+}
+
+.text-color-grey--dark {
+  color: hsl(0, 0%, 30%);
+}
+
+/* Fonts */
+
+.serif {
+  font-family: 'Crimson Text', serif;
+}
