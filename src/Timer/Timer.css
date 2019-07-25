@@ -8,6 +8,7 @@
   justify-content: center;
   width: 360px;
   height: 680px;
+  margin: 5rem auto 3rem auto;
   box-shadow: 0 0 15px hsl(0, 0%, 86%);
   background: hsl(0, 0%, 97%);
 }
@@ -24,11 +25,22 @@
 .timer-title {
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  flex: 1 0 150px;
   align-items: center;
   justify-content: flex-end;
 }
 
 .timer-body {
+  display: flex;
+  flex-direction: column;
   flex: 5 0 auto;
+  align-items: center;
+}
+
+.timer-body .timer-text {
+  margin-top: 4rem;
+}
+
+.timer-body .start-stop-button {
+  margin-top: 3rem;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import Title from './Title';
 import TimerText from './TimerText';
 import StatusMessage from './StatusMessage';
+import StartStopButton from './StartStopButton';
 import './Timer.css';
 
 function Timer() {
@@ -18,6 +19,7 @@ function Timer() {
 
         <section className="timer-body">
           <TimerText timer="23:10" currentCycle={8} totalCycle={10} />
+          <StartStopButton />
         </section>
       </div>
     </div>

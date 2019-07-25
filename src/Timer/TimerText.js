@@ -6,7 +6,7 @@ import './TimerText.css';
  * @param {*} total
  */
 const Cycle = props => (
-  <p className="timer-text cycle-text text-color-grey">
+  <p className="cycle-text text-color-grey">
     {props.current}/{props.total}
   </p>
 );
