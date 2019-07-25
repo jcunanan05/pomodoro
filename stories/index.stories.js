@@ -9,6 +9,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 import StartStopButton from '../src/Timer/StartStopButton';
 import TimerText from '../src/Timer/TimerText';
 import Title from '../src/Timer/Title';
+import 'minireset.css/minireset.css';
 import './fonts.css';
 import '../src/index.css';
 import '../src/App.css';
@@ -18,18 +19,9 @@ storiesOf('Welcome', module).add('to Storybook', () => (
   <Welcome showApp={linkTo('Button')} />
 ));
 
-storiesOf('Button', module)
-  .add('with text', () => (
-    <Button onClick={action('clicked')}>Hello Button</Button>
-  ))
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
-  ))
-  .add('Start / Stop Button', () => <StartStopButton />);
+storiesOf('Button', module).add('Start / Stop Button', () => (
+  <StartStopButton />
+));
 
 storiesOf('Text', module)
   .add('Timer Display', () => (
