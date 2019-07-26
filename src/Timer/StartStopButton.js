@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './StartStopButton.css';
 
 const StartIcon = () => (
@@ -15,14 +15,15 @@ const PauseIcon = () => (
   </>
 );
 
-function StartStopButton() {
-  const [isPlaying, setPlayingTo] = useState(false);
+/**
+ * @param {function} onClick
+ * @param {Boolean} isPlaying
+ */
+
+function StartStopButton(props) {
   return (
-    <button
-      className="start-stop-button"
-      onClick={() => setPlayingTo(!isPlaying)}
-    >
-      {!isPlaying ? <StartIcon /> : <PauseIcon />}
+    <button className="start-stop-button" onClick={props.onClick}>
+      {!props.isPlaying ? <StartIcon /> : <PauseIcon />}
     </button>
   );
 }

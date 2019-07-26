@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
@@ -19,9 +19,18 @@ storiesOf('Welcome', module).add('to Storybook', () => (
   <Welcome showApp={linkTo('Button')} />
 ));
 
-storiesOf('Button', module).add('Start / Stop Button', () => (
-  <StartStopButton />
-));
+storiesOf('Button', module).add('Start / Stop Button', () => {
+  const StartStopButtonContainer = () => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    return (
+      <StartStopButton
+        onClick={() => setIsPlaying(!isPlaying)}
+        isPlaying={isPlaying}
+      />
+    );
+  };
+  return <StartStopButtonContainer />;
+});
 
 storiesOf('Text', module)
   .add('Timer Display', () => (
