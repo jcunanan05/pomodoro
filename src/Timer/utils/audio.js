@@ -1,5 +1,5 @@
-function play(audioNode) {
-  audioNode.play();
+async function play(audioNode) {
+  await audioNode.play();
 }
 
 export default {

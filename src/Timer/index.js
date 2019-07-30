@@ -24,17 +24,31 @@ class Timer extends Component {
     ],
   };
 
+  toggleTimer = () => {
+    if (this.state.isTimerPlaying) {
+      this.stopTimer();
+      return;
+    }
+    this.startTimer();
+  };
+
   startTimer = async () => {
     await this.setState({
-      timer: setInterval(this.operateTimer, 1000),
+      timer: await setInterval(this.operateTimer, 1000),
+      isTimerPlaying: true,
     });
   };
 
-  operateTimer = () => {
-    if (this.state.timerSession.secondsRemaining < 1) {
-      this.stopTimer();
+  operateTimer = async () => {
+    if (this.state.isTimerPlaying === false) return;
+    await this.decreaseSecond(1);
+    if (this.state.timerSession.secondsRemaining <= 0) {
+      await this.stopTimer();
+      await audio.play(this.buzzerRef.current);
+      // start timer again
+      await this.setTimerSession(this.state.timerList[0]);
+      await this.startTimer();
     }
-    this.decreaseSecond(1);
   };
 
   decreaseSecond = async seconds => {
@@ -46,8 +60,9 @@ class Timer extends Component {
     }));
   };
 
-  stopTimer = () => {
-    if (this.state.timer !== null) clearInterval(this.state.timer);
+  stopTimer = async () => {
+    await this.setState({ isTimerPlaying: false });
+    if (this.state.timer !== null) await clearInterval(this.state.timer);
   };
 
   setTimerSession = async timerSession => {
@@ -88,7 +103,7 @@ class Timer extends Component {
               /*currentCycle={8} totalCycle={10}*/
             />
             <StartStopButton
-              onClick={() => {}}
+              onClick={this.toggleTimer}
               isPlaying={state.isTimerPlaying}
             />
             <audio ref={this.buzzerRef} src={timerSession.currentBuzzer}>
