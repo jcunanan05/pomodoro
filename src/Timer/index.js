@@ -8,99 +8,90 @@ import audio from './utils/audio';
 import './Timer.css';
 
 class Timer extends Component {
+  buzzerRef = createRef();
   state = {
     timer: null,
     isTimerPlaying: false,
-    isBreakTime: false,
-    timerSesson: 0,
-    seconds: {
-      main: 10,
-      break: 3,
+    timerSession: {
+      secondsRemaining: 0,
+      currentBuzzer: '',
     },
+    timerList: [
+      {
+        seconds: 5,
+        buzzer: '/assets/2buzzer.mp3',
+      },
+    ],
   };
 
-  buzzerRef = createRef();
-  buzzerRef2 = createRef();
-
-  startTimer = () => {
-    this.setState({ timer: setInterval(this.timerOperations, 1000) });
+  startTimer = async () => {
+    await this.setState({
+      timer: setInterval(this.operateTimer, 1000),
+    });
   };
 
-  stopTimer = () => {
-    clearInterval(this.state.timer);
+  operateTimer = () => {
+    if (this.state.timerSession.secondsRemaining < 1) {
+      this.stopTimer();
+    }
+    this.decreaseSecond(1);
   };
 
-  decreaseSeconds = async () => {
+  decreaseSecond = async seconds => {
     await this.setState(currentState => ({
-      ...currentState,
-      timerSession: currentState.timerSession - 1,
+      timerSession: {
+        ...currentState.timerSession,
+        secondsRemaining: currentState.timerSession.secondsRemaining - seconds,
+      },
     }));
   };
 
-  toggleTimer = async () => {
-    await this.setState(currentState => {
-      return {
-        ...currentState,
-        isTimerPlaying: !currentState.isTimerPlaying,
-      };
+  stopTimer = () => {
+    if (this.state.timer !== null) clearInterval(this.state.timer);
+  };
+
+  setTimerSession = async timerSession => {
+    await this.setState({
+      timerSession: {
+        secondsRemaining: timerSession.seconds,
+        currentBuzzer: timerSession.buzzer,
+      },
     });
-    // start/stop timer
-    if (this.state.isTimerPlaying) this.startTimer();
-    if (!this.state.isTimerPlaying) this.stopTimer();
   };
 
-  timerOperations = async () => {
-    // clear timer guard
-    if (!this.state.isTimerPlaying) {
-      this.stopTimer();
-      return;
-    }
-    await this.decreaseSeconds();
-    if (this.state.timerSession < 1) {
-      await this.setState({ isTimerPlaying: false, isBreakTime: true });
-      this.stopTimer();
-      audio.play(this.buzzerRef2.current);
-      // set timer to breaktimer
-      this.setState({ timerSession: this.state.seconds.break });
-    }
+  componentDidMount = async () => {
+    // ger timer[0]
+    await this.setTimerSession(this.state.timerList[0]);
   };
 
-  componentDidMount() {
-    this.setState({ timerSession: this.state.seconds.main });
-  }
-
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     this.stopTimer();
-  }
+  };
 
   render() {
     const { state } = this;
+    const { timerSession } = state;
     return (
       <div className="timer background">
         <div className="timer timer-paper">
           <section className="timer-title">
             <Title>Pomodoro Timer</Title>
             <StatusMessage
-              isBreak={state.isBreakTime}
+              // isBreak={state.isBreakTime}
               message="Start Working!"
               breakMessage="You're on a break!"
             />
           </section>
           <section className="timer-body">
             <TimerText
-              timer={time.toMinutesSeconds(
-                state.timerSession
-              )} /*currentCycle={8} totalCycle={10}*/
+              timer={time.toMinutesSeconds(timerSession.secondsRemaining)}
+              /*currentCycle={8} totalCycle={10}*/
             />
             <StartStopButton
-              onClick={this.toggleTimer}
+              onClick={() => {}}
               isPlaying={state.isTimerPlaying}
             />
-            <audio ref={this.buzzerRef} src="/assets/1buzzer.mp3">
-              Your browser does not support the
-              <code>audio</code> element.
-            </audio>
-            <audio ref={this.buzzerRef2} src="/assets/2buzzer.mp3">
+            <audio ref={this.buzzerRef} src={timerSession.currentBuzzer}>
               Your browser does not support the
               <code>audio</code> element.
             </audio>
