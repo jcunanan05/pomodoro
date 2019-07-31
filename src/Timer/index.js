@@ -11,11 +11,17 @@ class Timer extends Component {
   state = {
     timer: null,
     isTimerPlaying: false,
+    isBreak: false,
     timerSession: {
       secondsRemaining: 0,
-      buzzer: '',
+      buzzer: '/assets/2buzzer.mp3',
       id: 'main',
       cyclesCompleted: 0,
+      types: {
+        MAIN: 'main',
+        SHORT_BREAK: 'shortBreak',
+        LONG_BREAK: 'longBreak',
+      },
     },
     timerList: {
       main: {
@@ -35,6 +41,7 @@ class Timer extends Component {
 
   toggleTimer = () => {
     if (this.state.isTimerPlaying) {
+      this.setState({ isTimerPlaying: false });
       this.stopTimer();
       return;
     }
@@ -42,6 +49,30 @@ class Timer extends Component {
   };
 
   startNextTimer = async () => {
+    const { timerSession } = this.state;
+    // set main or break timer
+    if (timerSession.id === timerSession.types.MAIN) {
+      await this.setState(currentState => ({
+        ...currentState,
+        timerSession: {
+          ...currentState.timerSession,
+          id: timerSession.types.SHORT_BREAK,
+        },
+        isBreak: true,
+      }));
+    } else if (timerSession.id === timerSession.types.SHORT_BREAK) {
+      await this.setState(currentState => ({
+        ...currentState,
+        timerSession: {
+          ...currentState.timerSession,
+          id: timerSession.types.MAIN,
+          cyclesCompleted: currentState.timerSession.cyclesCompleted + 1,
+        },
+        isBreak: false,
+      }));
+    }
+
+    // prepare and start timer
     await this.setTimerSession(
       this.state.timerList[this.state.timerSession.id]
     );
@@ -68,6 +99,7 @@ class Timer extends Component {
 
   decreaseSecond = async seconds => {
     await this.setState(currentState => ({
+      ...currentState,
       timerSession: {
         ...currentState.timerSession,
         secondsRemaining: currentState.timerSession.secondsRemaining - seconds,
@@ -76,7 +108,6 @@ class Timer extends Component {
   };
 
   stopTimer = async () => {
-    await this.setState({ isTimerPlaying: false });
     if (this.state.timer !== null) await clearInterval(this.state.timer);
   };
 
@@ -85,7 +116,7 @@ class Timer extends Component {
       timerSession: {
         ...currentState.timerSession,
         secondsRemaining: timerSession.seconds,
-        buzzer: timerSession.buzzer,
+        // buzzer: timerSession.buzzer,
       },
     }));
   };
@@ -110,15 +141,17 @@ class Timer extends Component {
           <section className="timer-title">
             <Title>Pomodoro Timer</Title>
             <StatusMessage
-              // isBreak={state.isBreakTime}
+              isBreak={state.isBreak}
               message="Start Working!"
               breakMessage="You're on a break!"
             />
           </section>
           <section className="timer-body">
             <TimerText
+              isBreak={state.isBreak}
               timer={time.toMinutesSeconds(timerSession.secondsRemaining)}
-              /*currentCycle={8} totalCycle={10}*/
+              currentCycle={timerSession.cyclesCompleted}
+              totalCycle={timerSession.cyclesCompleted}
             />
             <StartStopButton
               onClick={this.toggleTimer}
