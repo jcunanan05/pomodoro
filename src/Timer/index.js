@@ -14,19 +14,24 @@ class Timer extends Component {
     isTimerPlaying: false,
     timerSession: {
       secondsRemaining: 0,
-      currentBuzzer: '',
-      timerListId: 0,
+      buzzer: '',
+      id: 'main',
+      cyclesCompleted: 0,
     },
-    timerList: [
-      {
+    timerList: {
+      main: {
         seconds: 5,
         buzzer: '/assets/2buzzer.mp3',
       },
-      {
+      shortBreak: {
         seconds: 3,
         buzzer: '/assets/1buzzer.mp3',
       },
-    ],
+      longBreak: {
+        seconds: 4,
+        buzzer: '/assets/1buzzer.mp3',
+      },
+    },
   };
 
   toggleTimer = () => {
@@ -44,37 +49,6 @@ class Timer extends Component {
     });
   };
 
-  startNextTimer = async () => {
-    if (
-      this.state.timerSession.timerListId ===
-      this.state.timerList.length - 1
-    ) {
-      //reset id
-      await this.setState(currentState => ({
-        ...currentState,
-        timerSession: {
-          ...currentState.timerSession,
-          timerListId: 0,
-        },
-      }));
-    } else {
-      // next timer
-      await this.setState(currentState => ({
-        ...currentState,
-        timerSession: {
-          ...currentState.timerSession,
-          timerListId: currentState.timerSession.timerListId + 1,
-        },
-      }));
-    }
-    // set timer
-    await this.setTimerSession(
-      this.state.timerList[this.state.timerSession.timerListId]
-    );
-    // start timer
-    await this.startTimer();
-  };
-
   operateTimer = async () => {
     if (this.state.isTimerPlaying === false) return;
     await this.decreaseSecond(1);
@@ -82,7 +56,7 @@ class Timer extends Component {
       await this.stopTimer();
       await this.buzzerRef.current.play();
       // start timer again
-      await this.startNextTimer();
+      // await this.startNextTimer();
     }
   };
 
@@ -105,7 +79,7 @@ class Timer extends Component {
       timerSession: {
         ...currentState.timerSession,
         secondsRemaining: timerSession.seconds,
-        currentBuzzer: timerSession.buzzer,
+        buzzer: timerSession.buzzer,
       },
     }));
   };
@@ -113,7 +87,7 @@ class Timer extends Component {
   componentDidMount = async () => {
     // ger timer[0]
     await this.setTimerSession(
-      this.state.timerList[this.state.timerSession.timerListId]
+      this.state.timerList[this.state.timerSession.id]
     );
   };
 
@@ -144,7 +118,7 @@ class Timer extends Component {
               onClick={this.toggleTimer}
               isPlaying={state.isTimerPlaying}
             />
-            <audio ref={this.buzzerRef} src={timerSession.currentBuzzer}>
+            <audio ref={this.buzzerRef} src={timerSession.buzzer}>
               Your browser does not support the
               <code>audio</code> element.
             </audio>
