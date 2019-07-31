@@ -15,11 +15,16 @@ class Timer extends Component {
     timerSession: {
       secondsRemaining: 0,
       currentBuzzer: '',
+      timerListId: 0,
     },
     timerList: [
       {
         seconds: 5,
         buzzer: '/assets/2buzzer.mp3',
+      },
+      {
+        seconds: 3,
+        buzzer: '/assets/1buzzer.mp3',
       },
     ],
   };
@@ -39,15 +44,45 @@ class Timer extends Component {
     });
   };
 
+  startNextTimer = async () => {
+    if (
+      this.state.timerSession.timerListId ===
+      this.state.timerList.length - 1
+    ) {
+      //reset id
+      await this.setState(currentState => ({
+        ...currentState,
+        timerSession: {
+          ...currentState.timerSession,
+          timerListId: 0,
+        },
+      }));
+    } else {
+      // next timer
+      await this.setState(currentState => ({
+        ...currentState,
+        timerSession: {
+          ...currentState.timerSession,
+          timerListId: currentState.timerSession.timerListId + 1,
+        },
+      }));
+    }
+    // set timer
+    await this.setTimerSession(
+      this.state.timerList[this.state.timerSession.timerListId]
+    );
+    // start timer
+    await this.startTimer();
+  };
+
   operateTimer = async () => {
     if (this.state.isTimerPlaying === false) return;
     await this.decreaseSecond(1);
     if (this.state.timerSession.secondsRemaining <= 0) {
       await this.stopTimer();
-      await audio.play(this.buzzerRef.current);
+      await this.buzzerRef.current.play();
       // start timer again
-      await this.setTimerSession(this.state.timerList[0]);
-      await this.startTimer();
+      await this.startNextTimer();
     }
   };
 
@@ -66,17 +101,20 @@ class Timer extends Component {
   };
 
   setTimerSession = async timerSession => {
-    await this.setState({
+    await this.setState(currentState => ({
       timerSession: {
+        ...currentState.timerSession,
         secondsRemaining: timerSession.seconds,
         currentBuzzer: timerSession.buzzer,
       },
-    });
+    }));
   };
 
   componentDidMount = async () => {
     // ger timer[0]
-    await this.setTimerSession(this.state.timerList[0]);
+    await this.setTimerSession(
+      this.state.timerList[this.state.timerSession.timerListId]
+    );
   };
 
   componentWillUnmount = () => {
