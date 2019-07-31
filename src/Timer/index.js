@@ -4,7 +4,6 @@ import TimerText from './TimerText';
 import StatusMessage from './StatusMessage';
 import StartStopButton from './StartStopButton';
 import time from '../libs/time';
-import audio from './utils/audio';
 import './Timer.css';
 
 class Timer extends Component {
@@ -42,6 +41,13 @@ class Timer extends Component {
     this.startTimer();
   };
 
+  startNextTimer = async () => {
+    await this.setTimerSession(
+      this.state.timerList[this.state.timerSession.id]
+    );
+    await this.startTimer();
+  };
+
   startTimer = async () => {
     await this.setState({
       timer: await setInterval(this.operateTimer, 1000),
@@ -56,7 +62,7 @@ class Timer extends Component {
       await this.stopTimer();
       await this.buzzerRef.current.play();
       // start timer again
-      // await this.startNextTimer();
+      await this.startNextTimer();
     }
   };
 
