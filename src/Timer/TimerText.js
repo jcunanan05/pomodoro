@@ -15,15 +15,25 @@ const Cycle = props => (
  * @param {*} timer - timer text
  * @param {int} currentCycle - rounds of pomodoro did
  * @param {int} totalCycle - total timer rounds
+ * @param {boolean} isBreak - timer on break
  */
 
 function TimerText(props) {
+  const isBreak = props.isBreak ? 'is-break-time text-color-secondary' : '';
+  const renderCycle = () => {
+    if (
+      typeof props.currentCycle !== 'number' &&
+      typeof props.totalCycle !== 'number'
+    )
+      return null;
+    return <Cycle current={props.currentCycle} total={props.totalCycle} />;
+  };
   return (
     <>
-      <h2 className="timer-text text-color-primary">{props.timer}</h2>
-      {!(props.currentCycle && props.totalCycle) ? null : (
-        <Cycle current={props.currentCycle} total={props.totalCycle} />
-      )}
+      <h2 className={`timer-text text-color-primary ${isBreak}`}>
+        {props.timer}
+      </h2>
+      {renderCycle()}
     </>
   );
 }
