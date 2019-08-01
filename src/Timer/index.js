@@ -12,6 +12,7 @@ class Timer extends Component {
     timer: null,
     isTimerPlaying: false,
     isBreak: false,
+    isLongBreak: false,
     timerSession: {
       secondsRemaining: 0,
       buzzer: '/assets/2buzzer.mp3',
@@ -39,6 +40,16 @@ class Timer extends Component {
     },
   };
 
+  increasePomodoroCycle = async () => {
+    await this.setState(currentState => ({
+      ...currentState,
+      timerSession: {
+        ...currentState.timerSession,
+        cyclesCompleted: currentState.timerSession.cyclesCompleted + 1,
+      },
+    }));
+  };
+
   toggleTimer = () => {
     if (this.state.isTimerPlaying) {
       this.setState({ isTimerPlaying: false });
@@ -49,31 +60,29 @@ class Timer extends Component {
   };
 
   startNextTimer = async () => {
-    const { timerSession, cyclesCompleted } = this.state;
-    // set main or break timer
-    if (timerSession.id === timerSession.types.MAIN) {
-      const BREAK =
-        cyclesCompleted % 3 === 0 && cyclesCompleted >= 3
-          ? timerSession.types.LONG_BREAK
-          : timerSession.types.SHORT_BREAK;
-      await this.setState(currentState => ({
-        ...currentState,
-        timerSession: {
-          ...currentState.timerSession,
-          id: BREAK,
-        },
-        isBreak: true,
-      }));
-    } else if (timerSession.id === timerSession.types.SHORT_BREAK) {
-      await this.setState(currentState => ({
-        ...currentState,
-        timerSession: {
-          ...currentState.timerSession,
-          id: timerSession.types.MAIN,
-          cyclesCompleted: currentState.timerSession.cyclesCompleted + 1,
-        },
-        isBreak: false,
-      }));
+    const { timerSession } = this.state;
+    const { cyclesCompleted } = timerSession;
+    const { MAIN, SHORT_BREAK, LONG_BREAK } = timerSession.types;
+
+    if (
+      timerSession.id === MAIN &&
+      cyclesCompleted >= 4 &&
+      cyclesCompleted % 4 === 0
+    ) {
+      await this.setTimerSessionId(LONG_BREAK);
+      await this.setBreak({ isBreak: true, longBreak: true });
+    } else if (timerSession.id === MAIN) {
+      await this.setTimerSessionId(SHORT_BREAK);
+      await this.setBreak({ isBreak: true, longBreak: false });
+    } else if (timerSession.id === SHORT_BREAK) {
+      // set to main timer
+      await this.setTimerSessionId(MAIN);
+      await this.increasePomodoroCycle();
+      await this.setBreak({ isBreak: false, longBreak: false });
+    } else if (timerSession.id === LONG_BREAK) {
+      await this.setTimerSessionId(MAIN);
+      await this.increasePomodoroCycle();
+      await this.setBreak({ isBreak: false, longBreak: false });
     }
 
     // prepare and start timer
@@ -115,6 +124,23 @@ class Timer extends Component {
     if (this.state.timer !== null) await clearInterval(this.state.timer);
   };
 
+  setBreak = async ({ isBreak, longBreak }) => {
+    await this.setState({
+      isBreak,
+      isLongBreak: longBreak,
+    });
+  };
+
+  setTimerSessionId = async id => {
+    await this.setState(currentState => ({
+      ...currentState,
+      timerSession: {
+        ...currentState.timerSession,
+        id,
+      },
+    }));
+  };
+
   setTimerSession = async timerSession => {
     await this.setState(currentState => ({
       timerSession: {
@@ -126,7 +152,7 @@ class Timer extends Component {
   };
 
   componentDidMount = async () => {
-    // ger timer[0]
+    // ger timer[main]
     await this.setTimerSession(
       this.state.timerList[this.state.timerSession.id]
     );
@@ -146,8 +172,10 @@ class Timer extends Component {
             <Title>Pomodoro Timer</Title>
             <StatusMessage
               isBreak={state.isBreak}
+              isLongBreak={state.isLongBreak}
               message="Start Working!"
               breakMessage="You're on a break!"
+              longBreakMessage="Take a long break!"
             />
           </section>
           <section className="timer-body">
