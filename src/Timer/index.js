@@ -25,15 +25,15 @@ class Timer extends Component {
     },
     timerList: {
       main: {
-        seconds: 5,
+        seconds: 1200,
         buzzer: '/assets/2buzzer.mp3',
       },
       shortBreak: {
-        seconds: 3,
+        seconds: 300,
         buzzer: '/assets/1buzzer.mp3',
       },
       longBreak: {
-        seconds: 4,
+        seconds: 900,
         buzzer: '/assets/1buzzer.mp3',
       },
     },
@@ -49,14 +49,18 @@ class Timer extends Component {
   };
 
   startNextTimer = async () => {
-    const { timerSession } = this.state;
+    const { timerSession, cyclesCompleted } = this.state;
     // set main or break timer
     if (timerSession.id === timerSession.types.MAIN) {
+      const BREAK =
+        cyclesCompleted % 3 === 0 && cyclesCompleted >= 3
+          ? timerSession.types.LONG_BREAK
+          : timerSession.types.SHORT_BREAK;
       await this.setState(currentState => ({
         ...currentState,
         timerSession: {
           ...currentState.timerSession,
-          id: timerSession.types.SHORT_BREAK,
+          id: BREAK,
         },
         isBreak: true,
       }));
