@@ -89,7 +89,7 @@ class Timer extends Component {
   operateTimer = async () => {
     if (this.state.isTimerPlaying === false) return;
     await this.decreaseSecond(1);
-    if (this.state.timerSession.secondsRemaining <= 0) {
+    if (this.state.timerSession.secondsRemaining < 0) {
       await this.stopTimer();
       await this.buzzerRef.current.play();
       // start timer again
