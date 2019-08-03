@@ -3,6 +3,7 @@ import Title from './Title';
 import TimerText from './TimerText';
 import StatusMessage from './StatusMessage';
 import StartStopButton from './StartStopButton';
+import SettingsButton from './Settings/SettingsButton';
 import time from '../libs/time';
 import './Timer.css';
 
@@ -189,6 +190,9 @@ class Timer extends Component {
               onClick={this.toggleTimer}
               isPlaying={state.isTimerPlaying}
             />
+            <div className="buttons-tray">
+              <SettingsButton />
+            </div>
             <audio ref={this.buzzerRef} src={timerSession.buzzer}>
               Your browser does not support the
               <code>audio</code> element.

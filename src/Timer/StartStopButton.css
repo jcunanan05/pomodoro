@@ -13,4 +13,5 @@
 .start-stop-button:active {
   background-color: #c24014;
   background-image: linear-gradient(#bd542b 30%, #c24014);
+  box-shadow: 1px 1px 4px 2px hsl(0, 0%, 78%);
 }

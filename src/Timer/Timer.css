@@ -8,9 +8,9 @@
   justify-content: center;
   width: 360px;
   height: 680px;
-  margin: 5rem auto 3rem auto;
-  box-shadow: 0 0 15px hsl(0, 0%, 86%);
-  background: hsl(0, 0%, 97%);
+  margin: 1rem auto 3rem auto;
+  box-shadow: 0 0 15px hsl(0, 0%, 72%);
+  background: hsl(0, 0%, 94%);
 }
 
 .timer .timer-paper {
@@ -18,8 +18,8 @@
   flex-direction: column;
   width: 340px;
   height: 660px;
-  background: hsl(0, 0%, 100%);
-  box-shadow: 0 0 1px hsl(0, 0%, 90%);
+  background: hsl(0, 0%, 98%);
+  box-shadow: 0 0 1px hsl(0, 0%, 75%);
 }
 
 .timer-title {
@@ -33,7 +33,7 @@
 .timer-body {
   display: flex;
   flex-direction: column;
-  flex: 5 0 auto;
+  flex: 1 0 500px;
   align-items: center;
 }
 
@@ -42,5 +42,17 @@
 }
 
 .timer-body .start-stop-button {
-  margin-top: 3rem;
+  margin-top: 5rem;
+}
+
+.timer-body .buttons-tray {
+  display: flex;
+  justify-content: center;
+  margin: 5rem 0 1rem 0;
+  padding: 1rem;
+  width: 100%;
+}
+
+.buttons-tray .settings-button {
+  width: 245px;
 }
