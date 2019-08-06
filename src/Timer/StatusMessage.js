@@ -10,18 +10,25 @@ import './StatusMessage.css';
  */
 
 function StatusMessage(props) {
-  const { isBreak = false, isLongBreak = false } = props; //default value
+  const { isBreak = false, isLongBreak = false } = props;
+  const displayedMessage = () => {
+    if (isBreak && !isLongBreak) {
+      return props.breakMessage;
+    } else if (isBreak && isLongBreak) {
+      return props.longBreakMessage;
+    } else if (!isBreak && !isLongBreak) {
+      return props.breakMessage;
+    } else {
+      return null;
+    }
+  };
   return (
     <p
       className={`status-message serif ${
-        !isBreak ? 'text-color-grey--dark' : 'text-color-secondary'
+        isBreak ? 'text-color-secondary' : 'text-color-grey--dark'
       }`}
     >
-      {!isBreak
-        ? props.message
-        : isLongBreak
-        ? props.longBreakMessage
-        : props.breakMessage}
+      {displayedMessage()}
     </p>
   );
 }
