@@ -5,15 +5,15 @@ import './StartStopButton.css';
 
 const StartIcon = () => (
   <>
-    <FontAwesomeIcon icon={faPlay} />
-    <span style={{ display: 'none' }}>Start Timer</span>
+    <FontAwesomeIcon title="Start Timer" icon={faPlay} />
+    <span className="sr-only">Start Timer</span>
   </>
 );
 
 const PauseIcon = () => (
   <>
-    <FontAwesomeIcon icon={faPause} />
-    <span style={{ display: 'none' }}>Pause Timer</span>
+    <FontAwesomeIcon title="Pause Timer" icon={faPause} />
+    <span className="sr-only">Pause Timer</span>
   </>
 );
 
@@ -24,8 +24,12 @@ const PauseIcon = () => (
 
 function StartStopButton(props) {
   return (
-    <button className="start-stop-button" onClick={props.onClick}>
-      {!props.isPlaying ? <StartIcon /> : <PauseIcon />}
+    <button
+      className="start-stop-button"
+      aria-label="Play / Pause"
+      onClick={props.onClick}
+    >
+      {props.isPlaying ? <PauseIcon /> : <StartIcon />}
     </button>
   );
 }

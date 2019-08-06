@@ -9,17 +9,19 @@ const defaultOnClick = () => {
 
 /**
  * @param {function} onClick
+ * @param {String} label - for accessibility
  */
 
 function SettingsButton(props) {
-  const { onClick = defaultOnClick } = props;
+  const { onClick = defaultOnClick, label = 'Show / Hide Settings' } = props;
   return (
     <button
-      aria-label="Settings"
+      aria-label={label}
       className="settings-button text-color-grey"
       onClick={onClick}
     >
-      <FontAwesomeIcon icon={faBars} />
+      <FontAwesomeIcon title={label} icon={faBars} />
+      <span className="sr-only">{label}</span>
     </button>
   );
 }
