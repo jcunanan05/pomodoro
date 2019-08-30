@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
 
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 
-import { Button, Welcome } from '@storybook/react/demo';
-
-import StartStopButton from '../src/Timer/StartStopButton';
-import TimerText from '../src/Timer/TimerText';
-import Title from '../src/Timer/Title';
-import StatusMessage from '../src/Timer/StatusMessage';
-import SettingsButton from '../src/Timer/Settings/SettingsButton';
+import StartStopButton from '../Timer/StartStopButton';
+import TimerText from '../Timer/TimerText';
+import Title from '../Timer/Title';
+import StatusMessage from '../Timer/StatusMessage';
+import SettingsButton from '../Timer/Settings/SettingsButton';
 
 import 'minireset.css/minireset.css';
 import './fonts.css';
-import '../src/index.css';
-import '../src/App.css';
-
-storiesOf('Welcome', module).add('to Storybook', () => (
-  <Welcome showApp={linkTo('Button')} />
-));
+import '../index.css';
+import '../App.css';
 
 storiesOf('Button', module)
   .add('Start / Stop Button', () => {
