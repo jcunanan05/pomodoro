@@ -7,6 +7,7 @@ import TimerText from '../Timer/TimerText';
 import Title from '../Timer/Title';
 import StatusMessage from '../Timer/StatusMessage';
 import SettingsButton from '../Timer/Settings/SettingsButton';
+import Adjuster from '../Timer/Adjuster';
 
 import 'minireset.css/minireset.css';
 import './fonts.css';
@@ -59,3 +60,7 @@ storiesOf('Text', module)
       />
     </>
   ));
+
+storiesOf('Adjuster', module).add('Adjuster Component', () => {
+  return <Adjuster title="Break length" />;
+});
