@@ -62,5 +62,13 @@ storiesOf('Text', module)
   ));
 
 storiesOf('Adjuster', module).add('Adjuster Component', () => {
-  return <Adjuster title="Break length" />;
+  return (
+    <div
+      style={{
+        padding: '1rem',
+      }}
+    >
+      <Adjuster title="Break length" />
+    </div>
+  );
 });

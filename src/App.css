@@ -1,19 +1,30 @@
+/* Global variables */
+:root {
+  /* colors */
+  --color-primary: #e66133;
+  --color-secondary: #e69733;
+
+  /* greys */
+  --color-grey-light: hsl(0, 0%, 50%);
+  --color-grey-dark: hsl(0, 0%, 30%);
+}
+
 /* Text Colors */
 
 .text-color-primary {
-  color: #e66133;
+  color: var(--color-primary);
 }
 
 .text-color-secondary {
-  color: #e69733;
+  color: var(--color-secondary);
 }
 
 .text-color-grey {
-  color: hsl(0, 0%, 50%);
+  color: var(--color-grey-light);
 }
 
 .text-color-grey--dark {
-  color: hsl(0, 0%, 30%);
+  color: var(--color-grey-dark);
 }
 
 /* Fonts */
