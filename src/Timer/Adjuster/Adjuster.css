@@ -1,5 +1,26 @@
+.adjuster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.adjuster .title {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.adjuster .minute-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: hsl(0, 0%, 0%);
+}
+
 @supports (display: grid) {
-  .adjuster {
+  .adjuster .functions {
     display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0.5rem;
+    justify-items: center;
   }
 }
