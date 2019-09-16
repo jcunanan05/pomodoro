@@ -6,6 +6,7 @@ import StartStopButton from './StartStopButton';
 // import SettingsButton from './Settings/SettingsButton';
 import time from '../libs/time';
 import './Timer.css';
+import Adjuster from './Adjuster';
 
 class Timer extends Component {
   buzzerRef = createRef();
@@ -177,37 +178,48 @@ class Timer extends Component {
     const { state } = this;
     const { timerSession } = state;
     return (
-      <div className="timer background">
-        <div className="timer timer-paper">
-          <section className="timer-title">
-            <Title>Pomodoro Timer</Title>
-            <StatusMessage
-              isBreak={state.isBreak}
-              isLongBreak={state.isLongBreak}
-              message="Start Working!"
-              breakMessage="You're on a break!"
-              longBreakMessage="Take a long break!"
-            />
-          </section>
-          <section className="timer-body">
-            <TimerText
-              isBreak={state.isBreak}
-              timer={time.toMinutesSeconds(timerSession.secondsRemaining)}
-              currentCycle={timerSession.cyclesCompleted}
-              totalCycle={timerSession.cyclesCompleted}
-            />
-            <StartStopButton
-              onClick={this.toggleTimer}
-              isPlaying={state.isTimerPlaying}
-            />
-            <audio className="buzzer" ref={this.buzzerRef}>
-              <source src={timerSession.buzzer} />
-              Your browser does not support the
-              <code>audio</code> element.
-            </audio>
-          </section>
+      <>
+        <div className="timer background">
+          <div className="timer timer-paper">
+            <section className="timer-title">
+              <Title>Pomodoro Timer</Title>
+              <StatusMessage
+                isBreak={state.isBreak}
+                isLongBreak={state.isLongBreak}
+                message="Start Working!"
+                breakMessage="You're on a break!"
+                longBreakMessage="Take a long break!"
+              />
+            </section>
+            <section className="timer-body">
+              <TimerText
+                isBreak={state.isBreak}
+                timer={time.toMinutesSeconds(timerSession.secondsRemaining)}
+                currentCycle={timerSession.cyclesCompleted}
+                totalCycle={timerSession.cyclesCompleted}
+              />
+              <StartStopButton
+                onClick={this.toggleTimer}
+                isPlaying={state.isTimerPlaying}
+              />
+              <audio className="buzzer" ref={this.buzzerRef}>
+                <source src={timerSession.buzzer} />
+                Your browser does not support the
+                <code>audio</code> element.
+              </audio>
+            </section>
+          </div>
         </div>
-      </div>
+
+        <div className="settings">
+          <Adjuster
+            title="Main Timer length"
+            minuteValue={0}
+            onAdd={() => {}}
+            onSubtract={() => {}}
+          />
+        </div>
+      </>
     );
   }
 }
