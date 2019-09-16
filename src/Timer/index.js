@@ -13,7 +13,7 @@ class Timer extends Component {
     timer: null,
     isTimerPlaying: false,
     isBreak: false,
-    isLongBreak: false,
+    // isLongBreak: false,
     timerSession: {
       secondsRemaining: 0,
       buzzer: '/assets/2buzzer.mp3',
@@ -22,22 +22,22 @@ class Timer extends Component {
       types: {
         MAIN: 'main',
         SHORT_BREAK: 'shortBreak',
-        LONG_BREAK: 'longBreak',
+        // LONG_BREAK: 'longBreak',
       },
     },
     timerList: {
       main: {
-        seconds: 1200,
+        seconds: 3,
         buzzer: '/assets/2buzzer.mp3',
       },
       shortBreak: {
-        seconds: 300,
+        seconds: 2,
         buzzer: '/assets/1buzzer.mp3',
       },
-      longBreak: {
-        seconds: 900,
-        buzzer: '/assets/1buzzer.mp3',
-      },
+      // longBreak: {
+      //   seconds: 900,
+      //   buzzer: '/assets/1buzzer.mp3',
+      // },
     },
   };
 
@@ -62,17 +62,19 @@ class Timer extends Component {
 
   startNextTimer = async () => {
     const { timerSession } = this.state;
-    const { cyclesCompleted } = timerSession;
-    const { MAIN, SHORT_BREAK, LONG_BREAK } = timerSession.types;
+    // const { cyclesCompleted } = timerSession;
+    const { MAIN, SHORT_BREAK /*LONG_BREAK*/ } = timerSession.types;
 
-    if (
-      timerSession.id === MAIN &&
-      cyclesCompleted >= 4 &&
-      cyclesCompleted % 4 === 0
-    ) {
-      await this.setTimerSessionId(LONG_BREAK);
-      await this.setBreak({ isBreak: true, longBreak: true });
-    } else if (timerSession.id === MAIN) {
+    // if (
+    //   timerSession.id === MAIN &&
+    //   cyclesCompleted >= 4 &&
+    //   cyclesCompleted % 4 === 0
+    // ) {
+    //   await this.setTimerSessionId(LONG_BREAK);
+    //   await this.setBreak({ isBreak: true, longBreak: true });
+    // } else
+    if (timerSession.id === MAIN) {
+      // activate short break
       await this.setTimerSessionId(SHORT_BREAK);
       await this.setBreak({ isBreak: true, longBreak: false });
     } else if (timerSession.id === SHORT_BREAK) {
@@ -80,11 +82,12 @@ class Timer extends Component {
       await this.setTimerSessionId(MAIN);
       await this.increasePomodoroCycle();
       await this.setBreak({ isBreak: false, longBreak: false });
-    } else if (timerSession.id === LONG_BREAK) {
-      await this.setTimerSessionId(MAIN);
-      await this.increasePomodoroCycle();
-      await this.setBreak({ isBreak: false, longBreak: false });
     }
+    // else if (timerSession.id === LONG_BREAK) {
+    //   await this.setTimerSessionId(MAIN);
+    //   await this.increasePomodoroCycle();
+    //   await this.setBreak({ isBreak: false, longBreak: false });
+    // }
 
     // prepare and start timer
     await this.setTimerSession(

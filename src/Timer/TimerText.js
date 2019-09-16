@@ -7,7 +7,8 @@ import './TimerText.css';
  */
 const Cycle = props => (
   <p className="cycle-text text-color-grey">
-    {props.current}/{props.total}
+    Round {props.current}
+    {/* {props.total} */}
   </p>
 );
 

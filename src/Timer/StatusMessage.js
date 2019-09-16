@@ -14,8 +14,8 @@ function StatusMessage(props) {
   const displayedMessage = () => {
     if (isBreak && !isLongBreak) {
       return props.breakMessage;
-    } else if (isBreak && isLongBreak) {
-      return props.longBreakMessage;
+      // } else if (isBreak && isLongBreak) {
+      //   return props.longBreakMessage;
     } else if (!isBreak && !isLongBreak) {
       return props.breakMessage;
     } else {
