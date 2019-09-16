@@ -108,7 +108,7 @@ class Timer extends Component {
     await this.decreaseSecond(1);
     if (this.state.timerSession.secondsRemaining < 0) {
       await this.stopTimer();
-      await this.buzzerRef.current.play();
+      await this.playBuzzer();
       // start timer again
       await this.startNextTimer();
     }
@@ -150,13 +150,20 @@ class Timer extends Component {
       timerSession: {
         ...currentState.timerSession,
         secondsRemaining: timerSession.seconds,
-        // buzzer: timerSession.buzzer,
+        buzzer: timerSession.buzzer,
       },
     }));
   };
 
+  playBuzzer = async () => {
+    const buzzer = this.buzzerRef.current;
+    await buzzer.pause();
+    await buzzer.load();
+    await buzzer.play();
+  };
+
   componentDidMount = async () => {
-    // ger timer[main]
+    // ger main timer settings
     await this.setTimerSession(
       this.state.timerList[this.state.timerSession.id]
     );
@@ -193,7 +200,8 @@ class Timer extends Component {
               onClick={this.toggleTimer}
               isPlaying={state.isTimerPlaying}
             />
-            <audio ref={this.buzzerRef} src={timerSession.buzzer}>
+            <audio className="buzzer" ref={this.buzzerRef}>
+              <source src={timerSession.buzzer} />
               Your browser does not support the
               <code>audio</code> element.
             </audio>
