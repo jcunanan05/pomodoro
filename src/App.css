@@ -7,6 +7,15 @@
   /* greys */
   --color-grey-light: hsl(0, 0%, 50%);
   --color-grey-dark: hsl(0, 0%, 30%);
+
+  /* breakpoints */
+  --small-mobile-max: 480px;
+  --mobile-max: 768px; /* mobile */
+  --tablet-min: 769px; /* tablet */
+  --tablet-max: 1215px;
+  --widescreen-min: 1216px; /* widescreen */
+  --widescreen-max: 1407px;
+  --fullhd-min: 1408px; /* full-hd */
 }
 
 /* Text Colors */
@@ -45,12 +54,4 @@
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
-}
-
-@supports (display: grid) {
-  .main {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    column-gap: 1rem;
-  }
 }

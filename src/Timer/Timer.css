@@ -1,3 +1,8 @@
+.timer-wrapper {
+  max-width: 43rem;
+  margin: 0 auto;
+}
+
 .timer {
   border-radius: 69px;
 }
@@ -8,7 +13,6 @@
   justify-content: center;
   width: 360px;
   height: 680px;
-  /* margin: 1rem auto 3rem auto; */
   box-shadow: 0 0 15px hsl(0, 0%, 72%);
   background: hsl(0, 0%, 94%);
 }
@@ -55,4 +59,42 @@
 
 .buttons-tray .settings-button {
   width: 245px;
+}
+
+@supports (display: grid) {
+  .timer-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 1rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .timer-wrapper {
+      grid-template-columns: 1fr;
+      row-gap: 1rem;
+      justify-items: center;
+    }
+  }
+
+  .settings {
+    display: grid;
+    grid-template-rows: min-content;
+    align-items: start;
+    row-gap: 1rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .settings {
+      justify-self: stretch;
+      justify-items: center;
+    }
+
+    .settings .adjuster {
+      width: 100%;
+    }
+  }
+
+  .timer-wrapper .settings {
+    align-self: center;
+  }
 }
