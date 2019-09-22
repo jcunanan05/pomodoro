@@ -163,6 +163,44 @@ class Timer extends Component {
     await buzzer.play();
   };
 
+  addTimerMinutes = timerName => {
+    const { types } = this.state.timerSession;
+    if (Object.values(types).includes(timerName)) {
+      this.setState(currentState => {
+        const newTimerSeconds = currentState.timerList[timerName].seconds + 60;
+        return {
+          ...currentState,
+          timerList: {
+            ...currentState.timerList,
+            [`${timerName}`]: {
+              ...currentState.timerList[timerName],
+              seconds: newTimerSeconds,
+            },
+          },
+        };
+      });
+    }
+  };
+
+  subtractTimerMinutes = timerName => {
+    const { types } = this.state.timerSession;
+    if (Object.values(types).includes(timerName)) {
+      this.setState(currentState => {
+        const newTimerSeconds = currentState.timerList[timerName].seconds - 60;
+        return {
+          ...currentState,
+          timerList: {
+            ...currentState.timerList,
+            [`${timerName}`]: {
+              ...currentState.timerList[timerName],
+              seconds: newTimerSeconds,
+            },
+          },
+        };
+      });
+    }
+  };
+
   componentDidMount = async () => {
     // ger main timer settings
     await this.setTimerSession(
@@ -176,9 +214,10 @@ class Timer extends Component {
 
   render() {
     const { state } = this;
-    const { timerSession } = state;
+    const { timerSession, timerList } = state;
+    const { types } = timerSession;
     return (
-      <>
+      <div className="timer-wrapper">
         <div className="timer background">
           <div className="timer timer-paper">
             <section className="timer-title">
@@ -214,12 +253,19 @@ class Timer extends Component {
         <div className="settings">
           <Adjuster
             title="Main Timer length"
-            minuteValue={0}
-            onAdd={() => {}}
-            onSubtract={() => {}}
+            minuteValue={time.toMinutes(timerList.main.seconds)}
+            onAdd={() => this.addTimerMinutes(types.MAIN)}
+            onSubtract={() => this.subtractTimerMinutes(types.MAIN)}
+          />
+
+          <Adjuster
+            title="Break Timer length"
+            minuteValue={time.toMinutes(timerList.shortBreak.seconds)}
+            onAdd={() => this.addTimerMinutes(types.SHORT_BREAK)}
+            onSubtract={() => this.subtractTimerMinutes(types.SHORT_BREAK)}
           />
         </div>
-      </>
+      </div>
     );
   }
 }
