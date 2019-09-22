@@ -1,6 +1,6 @@
-import time from '../../libs/time';
+import time from '../time';
 
-const { toMinutesSeconds } = time;
+const { toMinutesSeconds, toMinutes } = time;
 
 describe('toMinutesSeconds Functions', () => {
   test('returns a string', () => {
@@ -35,5 +35,23 @@ describe('toMinutesSeconds Functions', () => {
   });
   test('1199 should be 19:59', () => {
     expect(toMinutesSeconds(1199)).toBe('19:59');
+  });
+});
+
+describe('toMinutes function', () => {
+  test('01 seconds should be 0 min', () => {
+    expect(toMinutes(1)).toBe(0);
+  });
+
+  test('59 seconds should be 0 min', () => {
+    expect(toMinutes(59)).toBe(0);
+  });
+
+  test('60 seconds should be 1 min', () => {
+    expect(toMinutes(60)).toBe(1);
+  });
+
+  test('61 seconds should be 1 min', () => {
+    expect(toMinutes(61)).toBe(1);
   });
 });

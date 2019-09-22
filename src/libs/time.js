@@ -1,3 +1,8 @@
+/**
+ * @param {Number} seconds
+ * @returns {String} with mm:ss format
+ */
+
 function toMinutesSeconds(seconds) {
   const MINS = 60;
   const minutesString = () => {
@@ -14,6 +19,16 @@ function toMinutesSeconds(seconds) {
   return `${minutesString()}:${secondsString()}`;
 }
 
+/**
+ * @param {Number} seconds
+ * @returns {Number} Minutes without decimal.
+ */
+
+function toMinutes(seconds) {
+  return Math.floor(seconds / 60);
+}
+
 export default {
   toMinutesSeconds,
+  toMinutes,
 };
