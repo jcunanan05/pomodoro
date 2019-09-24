@@ -7,6 +7,7 @@ import StartStopButton from './StartStopButton';
 import time from '../libs/time';
 import './Timer.css';
 import Adjuster from './Adjuster';
+import utils from './utils';
 
 class Timer extends Component {
   buzzerRef = createRef();
@@ -167,20 +168,9 @@ class Timer extends Component {
     this.onAdjusterMinuteUpdate(() => {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
-        this.setState(currentState => {
-          const newTimerSeconds =
-            currentState.timerList[timerName].seconds + 60;
-          return {
-            ...currentState,
-            timerList: {
-              ...currentState.timerList,
-              [`${timerName}`]: {
-                ...currentState.timerList[timerName],
-                seconds: newTimerSeconds,
-              },
-            },
-          };
-        });
+        this.setState(currentState =>
+          utils.addSecondsTo({ currentState, timerName, secondsToAdd: 60 })
+        );
       }
     });
   };
@@ -209,7 +199,6 @@ class Timer extends Component {
 
   onAdjusterMinuteUpdate = callback => {
     callback();
-    console.log('adjusted the timer', callback);
   };
 
   componentDidMount = async () => {
