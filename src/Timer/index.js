@@ -164,41 +164,52 @@ class Timer extends Component {
   };
 
   addTimerMinutes = timerName => {
-    const { types } = this.state.timerSession;
-    if (Object.values(types).includes(timerName)) {
-      this.setState(currentState => {
-        const newTimerSeconds = currentState.timerList[timerName].seconds + 60;
-        return {
-          ...currentState,
-          timerList: {
-            ...currentState.timerList,
-            [`${timerName}`]: {
-              ...currentState.timerList[timerName],
-              seconds: newTimerSeconds,
+    this.onAdjusterMinuteUpdate(() => {
+      const { types } = this.state.timerSession;
+      if (Object.values(types).includes(timerName)) {
+        this.setState(currentState => {
+          const newTimerSeconds =
+            currentState.timerList[timerName].seconds + 60;
+          return {
+            ...currentState,
+            timerList: {
+              ...currentState.timerList,
+              [`${timerName}`]: {
+                ...currentState.timerList[timerName],
+                seconds: newTimerSeconds,
+              },
             },
-          },
-        };
-      });
-    }
+          };
+        });
+      }
+    });
   };
 
   subtractTimerMinutes = timerName => {
-    const { types } = this.state.timerSession;
-    if (Object.values(types).includes(timerName)) {
-      this.setState(currentState => {
-        const newTimerSeconds = currentState.timerList[timerName].seconds - 60;
-        return {
-          ...currentState,
-          timerList: {
-            ...currentState.timerList,
-            [`${timerName}`]: {
-              ...currentState.timerList[timerName],
-              seconds: newTimerSeconds,
+    this.onAdjusterMinuteUpdate(() => {
+      const { types } = this.state.timerSession;
+      if (Object.values(types).includes(timerName)) {
+        this.setState(currentState => {
+          const newTimerSeconds =
+            currentState.timerList[timerName].seconds - 60;
+          return {
+            ...currentState,
+            timerList: {
+              ...currentState.timerList,
+              [`${timerName}`]: {
+                ...currentState.timerList[timerName],
+                seconds: newTimerSeconds,
+              },
             },
-          },
-        };
-      });
-    }
+          };
+        });
+      }
+    });
+  };
+
+  onAdjusterMinuteUpdate = callback => {
+    callback();
+    console.log('adjusted the timer', callback);
   };
 
   componentDidMount = async () => {
