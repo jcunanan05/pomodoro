@@ -3,7 +3,7 @@ import Title from './Title';
 import TimerText from './TimerText';
 import StatusMessage from './StatusMessage';
 import StartStopButton from './StartStopButton';
-// import SettingsButton from './Settings/SettingsButton';
+import ResetButton from './Reset/ResetButton';
 import time from '../libs/time';
 import './Timer.css';
 import Adjuster from './Adjuster';
@@ -201,6 +201,27 @@ class Timer extends Component {
     callback();
   };
 
+  handleReset = () => {
+    this.resetTimer();
+    // change display color to Main timer
+    this.setState({ isTimerPlaying: false, isBreak: false });
+    this.stopTimer();
+  };
+
+  resetTimer = () => {
+    const { timerSession, timerList } = this.state;
+    const mainTimerSeconds = timerList[timerSession.types.MAIN].seconds;
+
+    // set timer seconds
+    this.setState(currentState => ({
+      ...currentState,
+      timerSession: {
+        ...currentState.timerSession,
+        secondsRemaining: mainTimerSeconds,
+      },
+    }));
+  };
+
   componentDidMount = async () => {
     // ger main timer settings
     await this.setTimerSession(
@@ -224,7 +245,7 @@ class Timer extends Component {
               <Title>Pomodoro Timer</Title>
               <StatusMessage
                 isBreak={state.isBreak}
-                isLongBreak={state.isLongBreak}
+                isLongBreak={false}
                 message="Start Working!"
                 breakMessage="You're on a break!"
                 longBreakMessage="Take a long break!"
@@ -246,6 +267,8 @@ class Timer extends Component {
                 Your browser does not support the
                 <code>audio</code> element.
               </audio>
+
+              <ResetButton onReset={this.handleReset} />
             </section>
           </div>
         </div>
