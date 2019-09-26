@@ -1,0 +1,21 @@
+.reset-button {
+  height: 2rem;
+  width: 2rem;
+  padding: 0.2rem;
+  background: unset;
+  border: 1px solid var(--color-grey-light);
+  border-radius: 50%;
+  color: var(--color-grey-light);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.reset-button:active {
+  box-shadow: 1px 1px 4px 2px hsl(0, 0%, 78%);
+  transform: translate(-1px, 1px);
+}

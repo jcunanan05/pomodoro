@@ -1,0 +1,17 @@
+.start-stop-button {
+  height: 5rem;
+  width: 5rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  font-size: 25px;
+  background-color: #e66233;
+  background-image: linear-gradient(#e66633 05%, #c24014);
+  color: #fff;
+}
+
+.start-stop-button:active {
+  background-color: #c24014;
+  background-image: linear-gradient(#bd542b 30%, #c24014);
+  box-shadow: 1px 1px 4px 2px hsl(0, 0%, 78%);
+}
