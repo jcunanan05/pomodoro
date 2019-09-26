@@ -1,34 +1,13 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import { storiesOf } from '@storybook/react';
-
-import StartStopButton from '../Timer/StartStopButton';
 import TimerText from '../Timer/TimerText';
 import Title from '../Timer/Title';
 import StatusMessage from '../Timer/StatusMessage';
-import SettingsButton from '../Timer/Settings/SettingsButton';
 
 import 'minireset.css/minireset.css';
 import './fonts.css';
 import '../index.css';
 import '../App.css';
-
-storiesOf('Button', module)
-  .add('Start / Stop Button', () => {
-    const StartStopButtonContainer = () => {
-      const [isPlaying, setIsPlaying] = useState(false);
-      return (
-        <StartStopButton
-          onClick={() => setIsPlaying(!isPlaying)}
-          isPlaying={isPlaying}
-        />
-      );
-    };
-    return <StartStopButtonContainer />;
-  })
-  .add('Settings Button', () => {
-    return <SettingsButton />;
-  });
 
 storiesOf('Text', module)
   .add('Timer Display', () => (
