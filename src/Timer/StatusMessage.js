@@ -12,15 +12,10 @@ import './StatusMessage.css';
 function StatusMessage(props) {
   const { isBreak = false, isLongBreak = false } = props;
   const displayedMessage = () => {
-    if (isBreak && !isLongBreak) {
-      return props.breakMessage;
-      // } else if (isBreak && isLongBreak) {
-      //   return props.longBreakMessage;
-    } else if (!isBreak && !isLongBreak) {
-      return props.breakMessage;
-    } else {
-      return null;
-    }
+    if (!isBreak && !isLongBreak) return props.message;
+    else if (isBreak && !isLongBreak) return props.breakMessage;
+    else if (!isBreak && isLongBreak) return props.longBreakMessage;
+    else return null;
   };
   return (
     <p
