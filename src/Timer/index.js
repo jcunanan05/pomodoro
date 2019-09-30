@@ -140,7 +140,7 @@ class Timer extends Component {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
         this.setState(currentState =>
-          utils.addSecondsTo({ currentState, timerName, secondsToAdd: 60 })
+          utils.addSecondsTo({ currentState, timerName, value: 60 })
         );
       }
     });
@@ -150,20 +150,9 @@ class Timer extends Component {
     this.onAdjusterMinuteUpdate(() => {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
-        this.setState(currentState => {
-          const newTimerSeconds =
-            currentState.timerList[timerName].seconds - 60;
-          return {
-            ...currentState,
-            timerList: {
-              ...currentState.timerList,
-              [`${timerName}`]: {
-                ...currentState.timerList[timerName],
-                seconds: newTimerSeconds,
-              },
-            },
-          };
-        });
+        this.setState(currentState =>
+          utils.subtractSecondsTo({ currentState, timerName, value: 60 })
+        );
       }
     });
   };
@@ -181,14 +170,15 @@ class Timer extends Component {
 
   resetTimer = () => {
     const { timerSession, timerList } = this.state;
-    const mainTimerSeconds = timerList[timerSession.types.MAIN].seconds;
+    const mainTimer = timerList[timerSession.types.MAIN];
 
     // set timer seconds
     this.setState(currentState => ({
       ...currentState,
       timerSession: {
         ...currentState.timerSession,
-        secondsRemaining: mainTimerSeconds,
+        secondsRemaining: mainTimer.seconds,
+        buzzer: mainTimer.buzzer,
       },
     }));
   };
