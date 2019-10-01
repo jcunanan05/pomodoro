@@ -5,6 +5,7 @@
   padding: 1rem;
   min-width: 12rem;
   max-width: 20rem;
+  background: white;
   box-shadow: 0 0 1px var(--color-grey-dark);
   border-radius: 5px;
 }

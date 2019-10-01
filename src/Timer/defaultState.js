@@ -16,11 +16,11 @@ const defaultState = {
   },
   timerList: {
     main: {
-      seconds: 0,
+      seconds: 3,
       buzzer: '/assets/2buzzer.mp3',
     },
     shortBreak: {
-      seconds: 0,
+      seconds: 2,
       buzzer: '/assets/1buzzer.mp3',
     },
     // longBreak: {

@@ -7,41 +7,12 @@ import ResetButton from './Reset/ResetButton';
 import time from '../libs/time';
 import './Timer.css';
 import Adjuster from './Adjuster';
+import defaultState from './defaultState';
 import utils from './utils';
 
 class Timer extends Component {
   buzzerRef = createRef();
-  state = {
-    timer: null,
-    isTimerPlaying: false,
-    isBreak: false,
-    // isLongBreak: false,
-    timerSession: {
-      secondsRemaining: 0,
-      buzzer: '/assets/2buzzer.mp3',
-      id: 'main',
-      cyclesCompleted: 0,
-      types: {
-        MAIN: 'main',
-        SHORT_BREAK: 'shortBreak',
-        // LONG_BREAK: 'longBreak',
-      },
-    },
-    timerList: {
-      main: {
-        seconds: 3,
-        buzzer: '/assets/2buzzer.mp3',
-      },
-      shortBreak: {
-        seconds: 2,
-        buzzer: '/assets/1buzzer.mp3',
-      },
-      // longBreak: {
-      //   seconds: 900,
-      //   buzzer: '/assets/1buzzer.mp3',
-      // },
-    },
-  };
+  state = defaultState;
 
   increasePomodoroCycle = async () => {
     await this.setState(currentState => ({
@@ -164,41 +135,35 @@ class Timer extends Component {
     await buzzer.play();
   };
 
-  addTimerMinutes = timerName => {
-    this.onAdjusterMinuteUpdate(() => {
+  addTimerMinutes = async timerName => {
+    await this.onAdjusterMinuteUpdate(async () => {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
-        this.setState(currentState =>
-          utils.addSecondsTo({ currentState, timerName, secondsToAdd: 60 })
+        await this.setState(currentState =>
+          utils.addSecondsTo({ currentState, timerName, value: 60 })
+        );
+
+        return timerName;
+      }
+    });
+  };
+
+  subtractTimerMinutes = async timerName => {
+    await this.onAdjusterMinuteUpdate(async () => {
+      const { types } = this.state.timerSession;
+      if (Object.values(types).includes(timerName)) {
+        await this.setState(currentState =>
+          utils.subtractSecondsTo({ currentState, timerName, value: 60 })
         );
       }
     });
   };
 
-  subtractTimerMinutes = timerName => {
-    this.onAdjusterMinuteUpdate(() => {
-      const { types } = this.state.timerSession;
-      if (Object.values(types).includes(timerName)) {
-        this.setState(currentState => {
-          const newTimerSeconds =
-            currentState.timerList[timerName].seconds - 60;
-          return {
-            ...currentState,
-            timerList: {
-              ...currentState.timerList,
-              [`${timerName}`]: {
-                ...currentState.timerList[timerName],
-                seconds: newTimerSeconds,
-              },
-            },
-          };
-        });
-      }
-    });
-  };
+  onAdjusterMinuteUpdate = async adjusterUpdate => {
+    const timerName = await adjusterUpdate();
+    // TODO(#1) Update timer display if its in the right session
 
-  onAdjusterMinuteUpdate = callback => {
-    callback();
+    // if(this.state.timerSession.id === timerName && this.state.timerSession.secondsRemaining === )
   };
 
   handleReset = () => {
@@ -210,14 +175,15 @@ class Timer extends Component {
 
   resetTimer = () => {
     const { timerSession, timerList } = this.state;
-    const mainTimerSeconds = timerList[timerSession.types.MAIN].seconds;
+    const mainTimer = timerList[timerSession.types.MAIN];
 
     // set timer seconds
     this.setState(currentState => ({
       ...currentState,
       timerSession: {
         ...currentState.timerSession,
-        secondsRemaining: mainTimerSeconds,
+        secondsRemaining: mainTimer.seconds,
+        buzzer: mainTimer.buzzer,
       },
     }));
   };
