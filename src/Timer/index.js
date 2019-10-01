@@ -135,30 +135,35 @@ class Timer extends Component {
     await buzzer.play();
   };
 
-  addTimerMinutes = timerName => {
-    this.onAdjusterMinuteUpdate(() => {
+  addTimerMinutes = async timerName => {
+    await this.onAdjusterMinuteUpdate(async () => {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
-        this.setState(currentState =>
+        await this.setState(currentState =>
           utils.addSecondsTo({ currentState, timerName, value: 60 })
         );
+
+        return timerName;
       }
     });
   };
 
-  subtractTimerMinutes = timerName => {
-    this.onAdjusterMinuteUpdate(() => {
+  subtractTimerMinutes = async timerName => {
+    await this.onAdjusterMinuteUpdate(async () => {
       const { types } = this.state.timerSession;
       if (Object.values(types).includes(timerName)) {
-        this.setState(currentState =>
+        await this.setState(currentState =>
           utils.subtractSecondsTo({ currentState, timerName, value: 60 })
         );
       }
     });
   };
 
-  onAdjusterMinuteUpdate = callback => {
-    callback();
+  onAdjusterMinuteUpdate = async adjusterUpdate => {
+    const timerName = await adjusterUpdate();
+    // TODO(#1) Update timer display if its in the right session
+
+    // if(this.state.timerSession.id === timerName && this.state.timerSession.secondsRemaining === )
   };
 
   handleReset = () => {
