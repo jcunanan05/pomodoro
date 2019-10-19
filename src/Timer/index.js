@@ -35,17 +35,8 @@ class Timer extends Component {
 
   startNextTimer = async () => {
     const { timerSession } = this.state;
-    // const { cyclesCompleted } = timerSession;
     const { MAIN, SHORT_BREAK /*LONG_BREAK*/ } = timerSession.types;
 
-    // if (
-    //   timerSession.id === MAIN &&
-    //   cyclesCompleted >= 4 &&
-    //   cyclesCompleted % 4 === 0
-    // ) {
-    //   await this.setTimerSessionId(LONG_BREAK);
-    //   await this.setBreak({ isBreak: true, longBreak: true });
-    // } else
     if (timerSession.id === MAIN) {
       // activate short break
       await this.setTimerSessionId(SHORT_BREAK);
@@ -56,11 +47,6 @@ class Timer extends Component {
       await this.increasePomodoroCycle();
       await this.setBreak({ isBreak: false, longBreak: false });
     }
-    // else if (timerSession.id === LONG_BREAK) {
-    //   await this.setTimerSessionId(MAIN);
-    //   await this.increasePomodoroCycle();
-    //   await this.setBreak({ isBreak: false, longBreak: false });
-    // }
 
     // prepare and start timer
     await this.setTimerSession(
@@ -88,13 +74,9 @@ class Timer extends Component {
   };
 
   decreaseSecond = async seconds => {
-    await this.setState(currentState => ({
-      ...currentState,
-      timerSession: {
-        ...currentState.timerSession,
-        secondsRemaining: currentState.timerSession.secondsRemaining - seconds,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.decreaseSeconds({ currentState, seconds })
+    );
   };
 
   stopTimer = async () => {
@@ -109,23 +91,15 @@ class Timer extends Component {
   };
 
   setTimerSessionId = async id => {
-    await this.setState(currentState => ({
-      ...currentState,
-      timerSession: {
-        ...currentState.timerSession,
-        id,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.setTimerSessionId({ currentState, id })
+    );
   };
 
   setTimerSession = async timerSession => {
-    await this.setState(currentState => ({
-      timerSession: {
-        ...currentState.timerSession,
-        secondsRemaining: timerSession.seconds,
-        buzzer: timerSession.buzzer,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.setTimerSession({ currentState, timerSession })
+    );
   };
 
   playBuzzer = async () => {
@@ -136,27 +110,37 @@ class Timer extends Component {
   };
 
   addTimerMinutes = async timerName => {
-    await this.onAdjusterMinuteUpdate(async () => {
-      const { types } = this.state.timerSession;
-      if (Object.values(types).includes(timerName)) {
-        await this.setState(currentState =>
-          utils.addSecondsTo({ currentState, timerName, value: 60 })
-        );
+    const onTimerSessionFound = async () => {
+      await this.setState(currentState =>
+        utils.addSecondsTo({ currentState, timerName, value: 60 })
+      );
+    };
 
-        return timerName;
-      }
-    });
+    await this.onAdjusterMinuteUpdate(
+      async () =>
+        await utils.adjustTimerMinutes({
+          currentState: this.state,
+          timerName,
+          onTimerSessionFound,
+        })
+    );
   };
 
   subtractTimerMinutes = async timerName => {
-    await this.onAdjusterMinuteUpdate(async () => {
-      const { types } = this.state.timerSession;
-      if (Object.values(types).includes(timerName)) {
-        await this.setState(currentState =>
-          utils.subtractSecondsTo({ currentState, timerName, value: 60 })
-        );
-      }
-    });
+    const onTimerSessionFound = async () => {
+      await this.setState(currentState =>
+        utils.subtractSecondsTo({ currentState, timerName, value: 60 })
+      );
+    };
+
+    await this.onAdjusterMinuteUpdate(
+      async () =>
+        await utils.adjustTimerMinutes({
+          currentState: this.state,
+          timerName,
+          onTimerSessionFound,
+        })
+    );
   };
 
   onAdjusterMinuteUpdate = async adjusterUpdate => {
@@ -182,6 +166,7 @@ class Timer extends Component {
       ...currentState,
       timerSession: {
         ...currentState.timerSession,
+        id: timerSession.types.MAIN,
         secondsRemaining: mainTimer.seconds,
         buzzer: mainTimer.buzzer,
       },
