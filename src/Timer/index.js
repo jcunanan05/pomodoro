@@ -74,13 +74,9 @@ class Timer extends Component {
   };
 
   decreaseSecond = async seconds => {
-    await this.setState(currentState => ({
-      ...currentState,
-      timerSession: {
-        ...currentState.timerSession,
-        secondsRemaining: currentState.timerSession.secondsRemaining - seconds,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.decreaseSeconds({ currentState, seconds })
+    );
   };
 
   stopTimer = async () => {
@@ -95,23 +91,15 @@ class Timer extends Component {
   };
 
   setTimerSessionId = async id => {
-    await this.setState(currentState => ({
-      ...currentState,
-      timerSession: {
-        ...currentState.timerSession,
-        id,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.setTimerSessionId({ currentState, id })
+    );
   };
 
   setTimerSession = async timerSession => {
-    await this.setState(currentState => ({
-      timerSession: {
-        ...currentState.timerSession,
-        secondsRemaining: timerSession.seconds,
-        buzzer: timerSession.buzzer,
-      },
-    }));
+    await this.setState(currentState =>
+      utils.setTimerSession({ currentState, timerSession })
+    );
   };
 
   playBuzzer = async () => {
@@ -122,27 +110,37 @@ class Timer extends Component {
   };
 
   addTimerMinutes = async timerName => {
-    await this.onAdjusterMinuteUpdate(async () => {
-      const { types } = this.state.timerSession;
-      if (Object.values(types).includes(timerName)) {
-        await this.setState(currentState =>
-          utils.addSecondsTo({ currentState, timerName, value: 60 })
-        );
+    const onTimerSessionFound = async () => {
+      await this.setState(currentState =>
+        utils.addSecondsTo({ currentState, timerName, value: 60 })
+      );
+    };
 
-        return timerName;
-      }
-    });
+    await this.onAdjusterMinuteUpdate(
+      async () =>
+        await utils.adjustTimerMinutes({
+          currentState: this.state,
+          timerName,
+          onTimerSessionFound,
+        })
+    );
   };
 
   subtractTimerMinutes = async timerName => {
-    await this.onAdjusterMinuteUpdate(async () => {
-      const { types } = this.state.timerSession;
-      if (Object.values(types).includes(timerName)) {
-        await this.setState(currentState =>
-          utils.subtractSecondsTo({ currentState, timerName, value: 60 })
-        );
-      }
-    });
+    const onTimerSessionFound = async () => {
+      await this.setState(currentState =>
+        utils.subtractSecondsTo({ currentState, timerName, value: 60 })
+      );
+    };
+
+    await this.onAdjusterMinuteUpdate(
+      async () =>
+        await utils.adjustTimerMinutes({
+          currentState: this.state,
+          timerName,
+          onTimerSessionFound,
+        })
+    );
   };
 
   onAdjusterMinuteUpdate = async adjusterUpdate => {
