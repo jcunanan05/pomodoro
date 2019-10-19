@@ -166,6 +166,7 @@ class Timer extends Component {
       ...currentState,
       timerSession: {
         ...currentState.timerSession,
+        id: timerSession.types.MAIN,
         secondsRemaining: mainTimer.seconds,
         buzzer: mainTimer.buzzer,
       },
