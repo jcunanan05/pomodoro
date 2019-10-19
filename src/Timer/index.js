@@ -35,17 +35,8 @@ class Timer extends Component {
 
   startNextTimer = async () => {
     const { timerSession } = this.state;
-    // const { cyclesCompleted } = timerSession;
     const { MAIN, SHORT_BREAK /*LONG_BREAK*/ } = timerSession.types;
 
-    // if (
-    //   timerSession.id === MAIN &&
-    //   cyclesCompleted >= 4 &&
-    //   cyclesCompleted % 4 === 0
-    // ) {
-    //   await this.setTimerSessionId(LONG_BREAK);
-    //   await this.setBreak({ isBreak: true, longBreak: true });
-    // } else
     if (timerSession.id === MAIN) {
       // activate short break
       await this.setTimerSessionId(SHORT_BREAK);
@@ -56,11 +47,6 @@ class Timer extends Component {
       await this.increasePomodoroCycle();
       await this.setBreak({ isBreak: false, longBreak: false });
     }
-    // else if (timerSession.id === LONG_BREAK) {
-    //   await this.setTimerSessionId(MAIN);
-    //   await this.increasePomodoroCycle();
-    //   await this.setBreak({ isBreak: false, longBreak: false });
-    // }
 
     // prepare and start timer
     await this.setTimerSession(
